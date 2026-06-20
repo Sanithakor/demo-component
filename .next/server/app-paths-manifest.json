@@ -1,8 +1,0 @@
-{
-  "/pricing/page": "app/pricing/page.js",
-  "/templates/page": "app/templates/page.js",
-  "/components/page": "app/components/page.js",
-  "/components/[id]/page": "app/components/[id]/page.js",
-  "/page": "app/page.js",
-  "/ai-generator/page": "app/ai-generator/page.js"
-}
