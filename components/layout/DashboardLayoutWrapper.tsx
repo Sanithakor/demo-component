@@ -14,8 +14,8 @@ export default function DashboardLayoutWrapper({ children }: { children: React.R
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
         <Navbar />
-        {/* pt-16 to push content below the fixed navbar */}
-        <div className="pt-16">
+        {/* pt-16/20 to push content below the fixed navbar */}
+        <div className="pt-16 lg:pt-20">
           {children}
         </div>
       </div>

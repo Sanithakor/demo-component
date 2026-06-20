@@ -208,7 +208,7 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              <Link href={plan.popular ? "/login" : "/login"}>
+              <Link href={plan.name === "Free" ? "/register" : "/register?plan=" + plan.name.toLowerCase()}>
                 <Button variant={plan.variant as any} className="w-full" size="lg">
                   {plan.cta}
                 </Button>

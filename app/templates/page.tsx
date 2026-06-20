@@ -3,94 +3,16 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Search, Eye, Heart, ArrowRight } from "lucide-react"
-import { Button, Badge, Card } from "@/components/ui"
+import { Button, Badge } from "@/components/ui"
 import TemplatePreview from "@/components/ui/TemplatePreview"
 import Link from "next/link"
-
-const templates = [
-  {
-    id: "saas-1",
-    title: "SaaS Starter Kit",
-    description: "Complete SaaS landing page with pricing, features, and auth pages",
-    category: "SaaS",
-    price: 49,
-    isPremium: true,
-    pages: 12,
-    components: 45,
-    preview: "bg-gradient-to-br from-blue-500 to-purple-600",
-  },
-  {
-    id: "ai-1",
-    title: "AI Dashboard",
-    description: "Modern AI application dashboard with chat and analytics",
-    category: "AI",
-    price: 79,
-    isPremium: true,
-    pages: 8,
-    components: 32,
-    preview: "bg-gradient-to-br from-violet-500 to-pink-600",
-  },
-  {
-    id: "agency-1",
-    title: "Agency Portfolio",
-    description: "Creative agency portfolio with case studies and team pages",
-    category: "Agency",
-    price: 39,
-    isPremium: false,
-    pages: 6,
-    components: 24,
-    preview: "bg-gradient-to-br from-orange-500 to-red-600",
-  },
-  {
-    id: "finance-1",
-    title: "Finance Dashboard",
-    description: "Financial analytics dashboard with charts and reporting",
-    category: "Finance",
-    price: 69,
-    isPremium: true,
-    pages: 10,
-    components: 38,
-    preview: "bg-gradient-to-br from-green-500 to-teal-600",
-  },
-  {
-    id: "portfolio-1",
-    title: "Developer Portfolio",
-    description: "Personal portfolio for developers with blog and projects",
-    category: "Portfolio",
-    price: 29,
-    isPremium: false,
-    pages: 5,
-    components: 18,
-    preview: "bg-gradient-to-br from-cyan-500 to-blue-600",
-  },
-  {
-    id: "dashboard-1",
-    title: "Admin Dashboard",
-    description: "Complete admin dashboard with tables, charts, and settings",
-    category: "Dashboard",
-    price: 59,
-    isPremium: true,
-    pages: 15,
-    components: 52,
-    preview: "bg-gradient-to-br from-indigo-500 to-purple-600",
-  },
-]
-
-const categories = [
-  { id: "all", name: "All Templates" },
-  { id: "saas", name: "SaaS" },
-  { id: "ai", name: "AI" },
-  { id: "agency", name: "Agency" },
-  { id: "finance", name: "Finance" },
-  { id: "portfolio", name: "Portfolio" },
-  { id: "dashboard", name: "Dashboard" },
-]
+import { allTemplates, templateCategories } from "@/lib/data"
 
 export default function TemplatesPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
 
-  const filteredTemplates = templates.filter((template) => {
+  const filteredTemplates = allTemplates.filter((template) => {
     const matchesCategory = selectedCategory === "all" || template.category.toLowerCase() === selectedCategory
     const matchesSearch = template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       template.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -141,7 +63,7 @@ export default function TemplatesPage() {
           transition={{ delay: 0.2 }}
           className="flex flex-wrap gap-2 mb-8"
         >
-          {categories.map((category) => (
+          {templateCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
@@ -172,10 +94,12 @@ export default function TemplatesPage() {
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gray-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                  <button className="p-3 bg-white rounded-xl hover:bg-gray-100 transition-colors">
-                    <Eye className="w-5 h-5 text-gray-900" />
-                  </button>
-                  <button className="p-3 bg-white rounded-xl hover:bg-gray-100 transition-colors">
+                  <Link href={`/templates/${template.id}`}>
+                    <button className="p-3 bg-white rounded-xl hover:bg-gray-100 transition-colors shadow-lg">
+                      <Eye className="w-5 h-5 text-gray-900" />
+                    </button>
+                  </Link>
+                  <button className="p-3 bg-white rounded-xl hover:bg-gray-100 transition-colors shadow-lg">
                     <Heart className="w-5 h-5 text-gray-900" />
                   </button>
                 </div>

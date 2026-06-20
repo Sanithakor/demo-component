@@ -26,7 +26,7 @@ const team = [
 
 export default function AboutPage() {
   return (
-    <div className="space-y-20">
+    <div className="space-y-20 pt-16 lg:pt-20 pb-20">
       <section className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-950 px-6 py-16 text-white sm:px-10 sm:py-24">
         <div className="container-custom">
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] items-center">

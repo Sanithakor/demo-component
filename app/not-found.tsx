@@ -14,7 +14,7 @@ const quickLinks = [
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-white dark:bg-gray-950 flex items-center justify-center px-4 pt-20 relative overflow-hidden">
       {/* Background blobs */}
       <div className="absolute top-1/4 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />

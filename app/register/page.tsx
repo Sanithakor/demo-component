@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { Mail, Lock, User, Eye, EyeOff, Github, Twitter, ArrowRight, Zap, Check } from "lucide-react"
 import { Button, Input } from "@/components/ui"
@@ -13,7 +14,9 @@ const perks = [
   "Get early access to new releases",
 ]
 
-export default function RegisterPage() {
+function RegisterForm() {
+  const searchParams = useSearchParams()
+  const plan = searchParams.get("plan")
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({ name: "", email: "", password: "" })
   const [isLoading, setIsLoading] = useState(false)
@@ -27,7 +30,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex pt-16 lg:pt-20">
       {/* Left: Visual */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 items-center justify-center p-12 relative overflow-hidden">
         {/* Background blobs */}
@@ -75,7 +78,11 @@ export default function RegisterPage() {
           </Link>
 
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Create your account</h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">Free forever. No credit card required.</p>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            {plan ? (
+              <span>You selected the <strong className="text-indigo-600 dark:text-indigo-400 capitalize">{plan}</strong> plan. Sign up to continue.</span>
+            ) : "Free forever. No credit card required."}
+          </p>
 
           {/* Social */}
           <div className="mt-8 space-y-3">
@@ -176,5 +183,13 @@ export default function RegisterPage() {
         </motion.div>
       </div>
     </div>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" /></div>}>
+      <RegisterForm />
+    </Suspense>
   )
 }

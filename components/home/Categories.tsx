@@ -56,16 +56,16 @@ const Categories = () => {
               transition={{ delay: index * 0.05 }}
             >
               <Link href={category.href}>
-                <div className="group relative p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-300 hover:shadow-lg hover:shadow-gray-900/5 dark:hover:shadow-gray-900/10">
-                  {/* Icon Background */}
-                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${category.color} opacity-10 group-hover:opacity-20 transition-opacity`}>
-                    <category.icon className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                <div className="group relative p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-indigo-200 dark:hover:border-indigo-800 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/5 dark:hover:shadow-indigo-500/10 cursor-pointer">
+                  {/* Icon */}
+                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${category.color}`}>
+                    <category.icon className="w-6 h-6 text-white" />
                   </div>
                   
-                  <h3 className="mt-4 font-semibold text-gray-900 dark:text-white group-hover:text-indigo-500 transition-colors">
+                  <h3 className="mt-4 font-semibold text-gray-900 dark:text-white group-hover:text-indigo-500 transition-colors text-sm">
                     {category.name}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {category.count} components
                   </p>
                 </div>

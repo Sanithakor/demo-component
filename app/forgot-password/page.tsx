@@ -20,7 +20,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex pt-16 lg:pt-20">
       {/* Left: Form */}
       <div className="flex-1 flex items-center justify-center p-8">
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="w-full max-w-md">

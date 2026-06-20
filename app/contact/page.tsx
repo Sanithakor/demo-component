@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
+import Link from "next/link"
 import { Mail, MessageSquare, MapPin, Send, Github, Twitter, Linkedin } from "lucide-react"
 import { Button, Input, Badge, Card } from "@/components/ui"
 
@@ -173,12 +174,12 @@ export default function ContactPage() {
             Check our FAQ or documentation for quick answers to common questions.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/docs">
+            <Link href="/docs">
               <Button variant="outline">View Documentation</Button>
-            </a>
-            <a href="/pricing#faq">
+            </Link>
+            <Link href="/pricing#faq">
               <Button variant="outline">See FAQ</Button>
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

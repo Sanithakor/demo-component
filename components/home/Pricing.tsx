@@ -127,7 +127,7 @@ const Pricing = () => {
                 ))}
               </ul>
 
-              <Link href={plan.popular ? "/pricing" : "/login"}>
+              <Link href={plan.name === "Free" ? "/register" : "/register?plan=" + plan.name.toLowerCase()}>
                 <Button variant={plan.variant as any} className="w-full" size="lg">
                   {plan.cta}
                 </Button>

@@ -1,69 +1,48 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { Search, Grid, List, ChevronDown } from "lucide-react"
 import ComponentCard from "@/components/home/ComponentCard"
-
-const categories = [
-  { id: "all",          name: "All Components", count: 256 },
-  { id: "hero",         name: "Hero Sections",  count: 45  },
-  { id: "pricing",      name: "Pricing",        count: 32  },
-  { id: "dashboard",    name: "Dashboards",     count: 28  },
-  { id: "testimonials", name: "Testimonials",   count: 24  },
-  { id: "navigation",   name: "Navigation",     count: 38  },
-  { id: "auth",         name: "Auth Forms",     count: 18  },
-  { id: "forms",        name: "Forms",          count: 42  },
-  { id: "ai",           name: "AI Sections",    count: 15  },
-  { id: "bento",        name: "Bento Grids",    count: 22  },
-  { id: "cta",          name: "CTA Sections",   count: 31  },
-]
+import { allComponents, componentCategories } from "@/lib/data"
 
 const sortOptions = [
-  { id: "popular",   name: "Most Popular"   },
-  { id: "newest",    name: "Newest"         },
-  { id: "downloads", name: "Most Downloaded"},
-  { id: "likes",     name: "Most Liked"     },
+  { id: "popular",   name: "Most Popular"    },
+  { id: "newest",    name: "Newest"          },
+  { id: "downloads", name: "Most Downloaded" },
+  { id: "likes",     name: "Most Liked"      },
 ]
 
-const allComponents = [
-  { id: "hero-1",         title: "Modern Hero Section",      description: "A beautiful, responsive hero section with gradient backgrounds and animated elements.",          category: "Hero",         isPremium: false, downloads: 1234, likes: 89  },
-  { id: "hero-2",         title: "Startup Hero",             description: "Clean startup hero with value proposition and CTA buttons.",                                    category: "Hero",         isPremium: false, downloads: 856,  likes: 67  },
-  { id: "hero-3",         title: "SaaS Hero Dark",           description: "Dark-themed hero section with animated gradient and floating UI elements.",                     category: "Hero",         isPremium: true,  downloads: 1102, likes: 94  },
-  { id: "pricing-1",      title: "SaaS Pricing Table",       description: "Clean pricing cards with monthly/yearly toggle and feature comparison.",                        category: "Pricing",      isPremium: true,  downloads: 2341, likes: 156 },
-  { id: "pricing-2",      title: "Pricing Comparison",       description: "Detailed pricing comparison table with highlighted features.",                                  category: "Pricing",      isPremium: true,  downloads: 1567, likes: 98  },
-  { id: "pricing-3",      title: "Simple Pricing Cards",     description: "Minimal pricing cards with clean typography and clear CTAs.",                                   category: "Pricing",      isPremium: false, downloads: 987,  likes: 72  },
-  { id: "dashboard-1",    title: "Analytics Dashboard",      description: "Complete dashboard layout with charts, tables, and sidebar navigation.",                        category: "Dashboard",    isPremium: true,  downloads: 3421, likes: 234 },
-  { id: "dashboard-2",    title: "E-commerce Dashboard",     description: "E-commerce analytics dashboard with sales metrics and product tables.",                         category: "Dashboard",    isPremium: true,  downloads: 2156, likes: 167 },
-  { id: "dashboard-3",    title: "SaaS Metrics Board",       description: "Key metrics dashboard with sparklines, KPIs, and activity feed.",                               category: "Dashboard",    isPremium: true,  downloads: 1890, likes: 143 },
-  { id: "testimonials-1", title: "Testimonial Grid",         description: "Masonry-style testimonial grid with star ratings and author avatars.",                          category: "Testimonials", isPremium: false, downloads: 1123, likes: 88  },
-  { id: "testimonials-2", title: "Testimonial Carousel",     description: "Auto-playing testimonial carousel with smooth transitions.",                                    category: "Testimonials", isPremium: false, downloads: 876,  likes: 65  },
-  { id: "navigation-1",   title: "Mega Menu Navbar",         description: "Full-featured navbar with mega dropdown menus and mobile drawer.",                              category: "Navigation",   isPremium: true,  downloads: 1456, likes: 112 },
-  { id: "navigation-2",   title: "Minimal Sticky Navbar",    description: "Clean sticky navbar with scroll-aware background and smooth transitions.",                      category: "Navigation",   isPremium: false, downloads: 2034, likes: 178 },
-  { id: "auth-1",         title: "Split Screen Login",       description: "Modern split-screen login with social auth and form validation.",                               category: "Auth",         isPremium: false, downloads: 1678, likes: 134 },
-  { id: "auth-2",         title: "Glassmorphism Auth",       description: "Frosted glass authentication form with animated background.",                                   category: "Auth",         isPremium: true,  downloads: 1234, likes: 98  },
-  { id: "forms-1",        title: "Multi-step Form",          description: "Wizard-style multi-step form with progress indicator and validation.",                          category: "Forms",        isPremium: true,  downloads: 1345, likes: 107 },
-  { id: "forms-2",        title: "Contact Form",             description: "Clean contact form with floating labels and success state.",                                    category: "Forms",        isPremium: false, downloads: 2109, likes: 165 },
-  { id: "ai-1",           title: "AI Chat Interface",        description: "Modern AI chat UI with typing indicators, message bubbles, and prompt suggestions.",            category: "AI",           isPremium: true,  downloads: 1876, likes: 156 },
-  { id: "ai-2",           title: "AI Prompt Generator",      description: "Prompt input with suggestions, history, and generated output display.",                         category: "AI",           isPremium: true,  downloads: 1432, likes: 118 },
-  { id: "bento-1",        title: "Bento Grid Layout",        description: "Modern bento-style grid with hover effects and responsive design.",                             category: "Bento",        isPremium: false, downloads: 1567, likes: 98  },
-  { id: "bento-2",        title: "Feature Bento",            description: "Feature showcase using bento grid layout with icons and descriptions.",                         category: "Bento",        isPremium: false, downloads: 987,  likes: 76  },
-  { id: "cta-1",          title: "Gradient CTA Banner",      description: "Full-width CTA section with gradient background and animated button.",                          category: "CTA",          isPremium: false, downloads: 1234, likes: 95  },
-  { id: "cta-2",          title: "Dark CTA Section",         description: "Dark themed CTA with glowing button and background particles.",                                 category: "CTA",          isPremium: true,  downloads: 876,  likes: 68  },
-]
-
-export default function ComponentsPage() {
+function ComponentsPage() {
+  const searchParams = useSearchParams()
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [sortBy, setSortBy]                     = useState("popular")
   const [searchQuery, setSearchQuery]           = useState("")
   const [viewMode, setViewMode]                 = useState<"grid" | "list">("grid")
 
-  const filtered = allComponents.filter(c => {
-    const matchCat    = selectedCategory === "all" || c.category.toLowerCase() === selectedCategory
-    const matchSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        c.description.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchCat && matchSearch
-  })
+  // Read URL params on mount
+  useEffect(() => {
+    const cat = searchParams.get("category")
+    const q = searchParams.get("search")
+    if (cat) setSelectedCategory(cat)
+    if (q) setSearchQuery(q)
+  }, [searchParams])
+
+  const filtered = allComponents
+    .filter(c => {
+      const matchCat    = selectedCategory === "all" || c.category.toLowerCase() === selectedCategory
+      const matchSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          c.description.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchCat && matchSearch
+    })
+    .sort((a, b) => {
+      if (sortBy === "downloads") return b.downloads - a.downloads
+      if (sortBy === "likes")     return b.likes - a.likes
+      if (sortBy === "newest")    return b.id.localeCompare(a.id)
+      // popular: weighted combination
+      return (b.downloads * 0.7 + b.likes * 0.3) - (a.downloads * 0.7 + a.likes * 0.3)
+    })
 
   return (
     <div className="min-h-screen pt-24">
@@ -72,7 +51,7 @@ export default function ComponentsPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">Components</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Browse our collection of {categories[0].count}+ production-ready components
+            Browse our collection of {allComponents.length}+ production-ready components
           </p>
         </motion.div>
 
@@ -135,7 +114,7 @@ export default function ComponentsPage() {
                 </button>
               </div>
               <div className="space-y-0.5">
-                {categories.map(cat => (
+                {componentCategories.map(cat => (
                   <button
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
@@ -188,5 +167,24 @@ export default function ComponentsPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+function ComponentsPageFallback() {
+  return (
+    <div className="min-h-screen pt-24 flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-gray-500 dark:text-gray-400">Loading components…</p>
+      </div>
+    </div>
+  )
+}
+
+export default function ComponentsPageWrapper() {
+  return (
+    <Suspense fallback={<ComponentsPageFallback />}>
+      <ComponentsPage />
+    </Suspense>
   )
 }
